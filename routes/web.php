@@ -1,13 +1,15 @@
 <?php
 
+use App\Http\Controllers\Admin\AboutController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\HeroController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\TyperTitleController;
+use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('frontend.home');
-});
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/blog', function () {
     return view('frontend.blog');
@@ -33,6 +35,14 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
+// Admin Routes
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
+    // Hero route
     Route::resource('hero', HeroController::class);
+    Route::resource('typer-title', TyperTitleController::class);
+
+    // Services route
+    Route::resource('service', ServiceController::class);
+    // About route
+    Route::resource('about', AboutController::class);
 });

@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
+    <meta name="csrf-token" id="csrf-token" content="{{ csrf_token() }}">
     <title>Dashboard</title>
 
     <!-- General CSS Files -->
@@ -19,6 +20,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/daterangepicker.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/plugins/select2.min.css') }}">
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Template CSS -->
     <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
@@ -61,12 +63,14 @@
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.7.6/jquery.nicescroll.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
-<script src="assets/js/stisla.js"></script>
+<script src="{{ asset('assets/js/stisla.js') }}"></script>
 
 <!-- JS Libraies -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.20/summernote-bs4.min.css"
       integrity="sha512-ngQ4IGzHQ3s/Hh8kMyG4FC74wzitukRMIcTOoKT3EyzFZCILOPF0twiXOQn75eDINUfKBYmzYn2AA8DkAk8veQ=="
       crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+<script src="{{ asset('assets/js/plugins/summernote-bs4.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/jquery.selectric.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/jquery.uploadPreview.min.js') }}"></script>
 <script src="{{ asset('assets/js/plugins/bootstrap-tagsinput.min.js') }}"></script>
@@ -84,16 +88,119 @@
 <!-- Page Specific JS File -->
 <script src="{{ asset('assets/js/page/forms-advanced-forms.js') }}"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 {{-- Show dynamic validation errors --}}
 <script>
     @if(!empty($errors->all()))
-        @foreach($errors->all() as $error)
-            toastr.error('{{ $error }}')
-        @endforeach
+    @foreach($errors->all() as $error)
+    toastr.error('{{ $error }}')
+    @endforeach
     @endif
 </script>
 
+<script>
+    $(document).ready(function () {
+        // Csrf token
+        $.ajaxSetup({
+            headers:
+                {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+        });
+
+
+        // sweet alert for delete
+        $('body').on('click', '.delete-item', function (e) {
+            e.preventDefault();
+            let deleteUrl = $(this).attr('href');
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: deleteUrl,
+                        type: 'DELETE',
+                        success: function (data) {
+                            console.log(data)
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your file has been deleted.",
+                                icon: "success"
+                            }).then(() => {
+                                window.location.reload();
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            console.log(error);
+                        }
+                    })
+                }
+            })
+        })
+    })
+</script>
+
+{{--Vanilla javascript--}}
+
+{{--<script>--}}
+{{--    document.addEventListener("DOMContentLoaded", function () {--}}
+{{--        // CSRF token setup--}}
+{{--        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');--}}
+
+{{--        // Sweet Alert for delete--}}
+{{--        document.body.addEventListener('click', function (e) {--}}
+{{--            if (e.target.classList.contains('delete-item')) {--}}
+{{--                e.preventDefault();--}}
+{{--                const deleteUrl = e.target.getAttribute('href');--}}
+
+{{--                Swal.fire({--}}
+{{--                    title: 'Are you sure?',--}}
+{{--                    text: "You won't be able to revert this!",--}}
+{{--                    icon: 'warning',--}}
+{{--                    showCancelButton: true,--}}
+{{--                    confirmButtonColor: '#3085d6',--}}
+{{--                    cancelButtonColor: '#d33',--}}
+{{--                    confirmButtonText: 'Yes, delete it!'--}}
+{{--                }).then((result) => {--}}
+{{--                    if (result.isConfirmed) {--}}
+{{--                        fetch(deleteUrl, {--}}
+{{--                            method: 'DELETE',--}}
+{{--                            headers: {--}}
+{{--                                'X-CSRF-TOKEN': csrfToken,--}}
+{{--                                'Content-Type': 'application/json'--}}
+{{--                            }--}}
+{{--                        })--}}
+{{--                            --}}
+{{--                            .then(data => {--}}
+{{--                                console.log(data);--}}
+{{--                                Swal.fire({--}}
+{{--                                    title: "Deleted!",--}}
+{{--                                    text: "Your file has been deleted.",--}}
+{{--                                    icon: "success"--}}
+{{--                                }).then(() => {--}}
+{{--                                    window.location.reload();--}}
+{{--                                });--}}
+{{--                            })--}}
+{{--                            .catch(error => {--}}
+{{--                                console.error(error);--}}
+{{--                            });--}}
+{{--                    }--}}
+{{--                });--}}
+{{--            }--}}
+{{--        });--}}
+{{--    });--}}
+
+{{--</script>--}}
+
+@stack('scripts')
 
 </body>
 </html>

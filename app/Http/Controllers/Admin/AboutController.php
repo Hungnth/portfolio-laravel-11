@@ -3,19 +3,18 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Hero;
+use App\Models\About;
 use Illuminate\Http\Request;
-use File;
 
-class HeroController extends Controller
+class AboutController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $hero = Hero::first();
-        return view('admin.hero.index', compact('hero'));
+        $about = About::first();
+        return view('admin.about.index',compact('about'));
     }
 
     /**
@@ -56,37 +55,30 @@ class HeroController extends Controller
     public function update(Request $request, string $id)
     {
         $request->validate([
-            'title' => ['required', 'max:255'],
-            'sub_title' => ['required', 'max:500'],
-            'image' => ['max:5000', 'image'],
+           'title' => ['required', 'max:200'],
+           'description' => ['required', 'max:1000'],
+           'image' => ['required', 'image'],
+           'resume' => ['mimes:pdf,csv,text', 'max:10000'],
+
         ]);
 
-        $hero = Hero::first();
-        if ($request->hasFile('image')) {
+        $about = About::first();
+        $image_path = handle_upload('image', $about);
+        $resume_path = handle_upload('resume', $about);
 
-            if ($hero && File::exists(public_path($hero->image))) {
-                File::delete(public_path($hero->image));
-            }
-
-            $image = $request->file('image');
-            $image_name = rand() . $image->getClientOriginalName();
-            $image->move(public_path('/uploads'), $image_name);
-
-            $image_path = '/uploads/' . $image_name;
-        }
-
-        Hero::updateOrCreate(
+        About::updateOrCreate(
             ['id' => $id],
             [
                 'title' => $request->title,
-                'sub_title' => $request->sub_title,
-                'btn_text' => $request->btn_text,
-                'btn_url' => $request->btn_url,
-                'image' => $image_path ?? $hero->image,
+                'description' => $request->description,
+                'image' => $image_path ?? $about->image,
+                'resume' => $resume_path ?? $about->resume,
             ],
 
         );
+
         toastr()->success('Updated Successfully!');
+
         return redirect()->back();
     }
 
