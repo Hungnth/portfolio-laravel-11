@@ -1,9 +1,9 @@
 <?php
 
 
-
 /**
  * Handle file upload
+ * @throws Exception
  */
 
 function handle_upload($input_name, $model = null)
@@ -27,3 +27,15 @@ function handle_upload($input_name, $model = null)
         throw $e;
     }
 }
+
+function delete_file_exists($file_path)
+{
+    try {
+        if (\File::exists(public_path($file_path))) {
+            \File::delete(public_path($file_path));
+        }
+    } catch (\Exception $e) {
+        throw $e;
+    }
+}
+

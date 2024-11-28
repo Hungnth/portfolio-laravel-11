@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\TyperTitle;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class TyperTitleDataTable extends DataTable
+class CategoryDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -24,8 +24,8 @@ class TyperTitleDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addColumn('action', function ($query) {
                 return '
-                <a href="' . route('admin.typer-title.edit', $query->id) . '" class="btn btn-primary mr-1"><i class="fas fa-edit"></i></a>
-                <a href="' . route('admin.typer-title.destroy', $query->id) . '" class="btn btn-danger delete-item"><i class="fas fa-trash"></i></a>';
+                <a href="' . route('admin.category.edit', $query->id) . '" class="btn btn-primary mr-1"><i class="fas fa-edit"></i></a>
+                <a href="' . route('admin.category.destroy', $query->id) . '" class="btn btn-danger delete-item"><i class="fas fa-trash"></i></a>';
             })
             ->setRowId('id');
     }
@@ -33,7 +33,7 @@ class TyperTitleDataTable extends DataTable
     /**
      * Get the query source of dataTable.
      */
-    public function query(TyperTitle $model): QueryBuilder
+    public function query(Category $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -44,20 +44,20 @@ class TyperTitleDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-            ->setTableId('typertitle-table')
-            ->columns($this->getColumns())
-            ->minifiedAjax()
-            // ->dom('Bfrtip')
-            ->orderBy(0)
-            ->selectStyleSingle()
-            ->buttons([
-                // Button::make('excel'),
-                // Button::make('csv'),
-                // Button::make('pdf'),
-                // Button::make('print'),
-                // Button::make('reset'),
-                // Button::make('reload')
-            ]);
+                    ->setTableId('category-table')
+                    ->columns($this->getColumns())
+                    ->minifiedAjax()
+                    //->dom('Bfrtip')
+                    ->orderBy(1)
+                    ->selectStyleSingle()
+                    ->buttons([
+                        // Button::make('excel'),
+                        // Button::make('csv'),
+                        // Button::make('pdf'),
+                        // Button::make('print'),
+                        // Button::make('reset'),
+                        // Button::make('reload')
+                    ]);
     }
 
     /**
@@ -67,7 +67,8 @@ class TyperTitleDataTable extends DataTable
     {
         return [
             Column::make('id')->width(100)->addClass('text-left'),
-            Column::make('title'),
+            Column::make('name'),
+            Column::make('slug'),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -81,6 +82,6 @@ class TyperTitleDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'TyperTitle_' . date('YmdHis');
+        return 'Category_' . date('YmdHis');
     }
 }

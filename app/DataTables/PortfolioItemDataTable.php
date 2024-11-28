@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\Models\Service;
+use App\Models\PortfolioItem;
 use Illuminate\Database\Eloquent\Builder as QueryBuilder;
 use Yajra\DataTables\EloquentDataTable;
 use Yajra\DataTables\Html\Builder as HtmlBuilder;
@@ -12,7 +12,7 @@ use Yajra\DataTables\Html\Editor\Editor;
 use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 
-class ServiceDataTable extends DataTable
+class PortfolioItemDataTable extends DataTable
 {
     /**
      * Build the DataTable class.
@@ -22,18 +22,28 @@ class ServiceDataTable extends DataTable
     public function dataTable(QueryBuilder $query): EloquentDataTable
     {
         return (new EloquentDataTable($query))
+            ->addColumn('image', function ($query) {
+                return '<img style="width: 70px" src="' . asset($query->image) . '">';
+            })
+            ->addColumn('created_at', function ($query) {
+                return date('d-m-Y', strtotime($query->created_at));
+            })
+            ->addColumn('category', function ($query) {
+                return $query->category->name;
+            })
             ->addColumn('action', function ($query) {
                 return '
-                <a href="' . route('admin.service.edit', $query->id) . '" class="btn btn-primary mr-1"><i class="fas fa-edit"></i></a>
-                <a href="' . route('admin.service.destroy', $query->id) . '" class="btn btn-danger delete-item"><i class="fas fa-trash"></i></a>';
+                <a href="' . route('admin.portfolio-item.edit', $query->id) . '" class="btn btn-primary mr-1"><i class="fas fa-edit"></i></a>
+                <a href="' . route('admin.portfolio-item.destroy', $query->id) . '" class="btn btn-danger delete-item"><i class="fas fa-trash"></i></a>';
             })
+            ->rawColumns(['image', 'action'])
             ->setRowId('id');
     }
 
     /**
      * Get the query source of dataTable.
      */
-    public function query(Service $model): QueryBuilder
+    public function query(PortfolioItem $model): QueryBuilder
     {
         return $model->newQuery();
     }
@@ -44,7 +54,7 @@ class ServiceDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('service-table')
+                    ->setTableId('portfolioitem-table')
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     //->dom('Bfrtip')
@@ -67,8 +77,10 @@ class ServiceDataTable extends DataTable
     {
         return [
             Column::make('id')->width(100)->addClass('text-left'),
-            Column::make('name')->width(400),
-            Column::make('description'),
+            Column::make('image')->width(100),
+            Column::make('title'),
+            Column::make('category')->width(300),
+            Column::make('created_at')->width(200),
             Column::computed('action')
                 ->exportable(false)
                 ->printable(false)
@@ -82,6 +94,6 @@ class ServiceDataTable extends DataTable
      */
     protected function filename(): string
     {
-        return 'Service_' . date('YmdHis');
+        return 'PortfolioItem_' . date('YmdHis');
     }
 }
