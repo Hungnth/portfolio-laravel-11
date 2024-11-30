@@ -1,26 +1,33 @@
 <?php
 
 use App\Http\Controllers\Admin\AboutController;
+use App\Http\Controllers\Admin\BlogCategoryController;
+use App\Http\Controllers\Admin\BlogController;
+use App\Http\Controllers\Admin\BlogSectionSettingController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\ExperienceController;
+use App\Http\Controllers\Admin\FeedbackController;
+use App\Http\Controllers\Admin\FeedbackSectionSettingController;
+use App\Http\Controllers\Admin\FooterContactInfoController;
+use App\Http\Controllers\Admin\FooterInforController;
+use App\Http\Controllers\Admin\FooterSocialLinkController;
 use App\Http\Controllers\Admin\HeroController;
 use App\Http\Controllers\Admin\PortfolioItemController;
 use App\Http\Controllers\Admin\PortfolioSectionSettingController;
 use App\Http\Controllers\Admin\ProfileController;
 use App\Http\Controllers\Admin\ServiceController;
+use App\Http\Controllers\Admin\SkillItemController;
+use App\Http\Controllers\Admin\SkillSectionSettingController;
 use App\Http\Controllers\Admin\TyperTitleController;
 use App\Http\Controllers\Frontend\HomeController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/blog', function () {
-    return view('frontend.blog');
-});
-
-Route::get('/blog-details', function () {
-    return view('frontend.blog-details');
-});
+// Route::get('/blog', function () {
+//     return view('frontend.blog');
+// });
 
 Route::get('/dashboard', [DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -35,14 +42,17 @@ Route::middleware('auth')->group(function () {
 require __DIR__ . '/auth.php';
 
 // Portfolio Details
-Route::get('/portfolio-details/{id}', [HomeController::class, 'show_portfolio '])->name('show.portfolio');
+Route::get('/portfolio-details/{id}', [HomeController::class, 'show_portfolio'])->name('show.portfolio');
+// Blog Details
+Route::get('/blog-details/{id}', [HomeController::class, 'show_blog'])->name('show.blog');
+// Blogs
+Route::get('/blogs', [HomeController::class, 'blog'])->name('blog');
 
 // Admin Routes
 Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], function () {
     // Hero route
     Route::resource('hero', HeroController::class);
     Route::resource('typer-title', TyperTitleController::class);
-
     // Services route
     Route::resource('service', ServiceController::class);
     // About route
@@ -54,5 +64,27 @@ Route::group(['middleware' => ['auth'], 'prefix' => 'admin', 'as' => 'admin.'], 
     Route::resource('portfolio-item', PortfolioItemController::class);
     // Portfolio Section Setting route
     Route::resource('portfolio-section-setting', PortfolioSectionSettingController::class);
+    // Skill Section Setting route
+    Route::resource('skill-section-setting', SkillSectionSettingController::class);
+    // Skill Items route
+    Route::resource('skill-item', SkillItemController::class);
+    // Experience route
+    Route::resource('experience', ExperienceController::class);
+    // Feedback route
+    Route::resource('feedback', FeedbackController::class);
+    // Feedback Section Setting route
+    Route::resource('feedback-section-setting', FeedbackSectionSettingController::class);
+    // Blog Category route
+    Route::resource('blog-category', BlogCategoryController::class);
+    // Blog route
+    Route::resource('blog', BlogController::class);
+    // Blog Section Setting route
+    Route::resource('blog-section-setting', BlogSectionSettingController::class);
+    // Footer Social Link route
+    Route::resource('footer-social', FooterSocialLinkController::class);
+    // Footer Information route
+    Route::resource('footer-info', FooterInforController::class);
+    // Footer Contact Information route
+    Route::resource('footer-contact-info', FooterContactInfoController::class);
 
 });

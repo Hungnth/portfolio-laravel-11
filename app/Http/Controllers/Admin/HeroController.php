@@ -58,7 +58,7 @@ class HeroController extends Controller
         $request->validate([
             'title' => ['required', 'max:255'],
             'sub_title' => ['required', 'max:500'],
-            'image' => ['max:5000', 'image'],
+            'image' => ['max:5120', 'image'],
         ]);
 
         $hero = Hero::first();
@@ -86,7 +86,9 @@ class HeroController extends Controller
             ],
 
         );
+
         toastr()->success('Updated Successfully!');
+
         return redirect()->back();
     }
 

@@ -39,3 +39,22 @@ function delete_file_exists($file_path)
     }
 }
 
+/**
+ * Get dynamic colors
+ */
+
+function get_colors($index)
+{
+    $colors = [
+        '#558bff',
+        '#fecc90',
+        '#ff885e',
+        '#282828',
+        '#190844',
+        '#9dd3ff',
+    ];
+
+    return $colors[$index % count($colors)];
+
+}
+
