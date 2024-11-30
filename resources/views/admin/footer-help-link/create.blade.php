@@ -4,9 +4,9 @@
     <section class="section">
         <div class="section-header">
             <div class="section-header-back">
-                <a href="features-posts.html" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
+                <a href="{{ route('admin.feedback.index') }}" class="btn btn-icon"><i class="fas fa-arrow-left"></i></a>
             </div>
-            <h1>Footer Contact Information</h1>
+            <h1>Footer Help Links</h1>
         </div>
 
         <div class="section-body">
@@ -14,42 +14,34 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header">
-                            <h4>Update Footer Contact Information</h4>
+                            <h4>Create Help Link</h4>
                         </div>
 
                         <div class="card-body">
-                            <form action="{{ route('admin.footer-contact-info.update', 1) }}" method="post"
+                            <form action="{{ route('admin.footer-help-links.store') }}" method="post"
                                   enctype="multipart/form-data">
                                 @csrf
-                                @method('PUT')
 
                                 <div class="form-group row mb-4">
-                                    <label
-                                        class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Address</label>
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Name</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="address" class="form-control" value="{{ $contact->address }}">
+                                        <input type="text" name="name" class="form-control">
+
                                     </div>
                                 </div>
 
                                 <div class="form-group row mb-4">
-                                    <label
-                                        class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Phone</label>
+                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Url</label>
                                     <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="phone" class="form-control" value="{{ $contact->phone }}">
+                                        <input type="text" name="url" class="form-control">
                                     </div>
                                 </div>
 
-                                <div class="form-group row mb-4">
-                                    <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">Email</label>
-                                    <div class="col-sm-12 col-md-7">
-                                        <input type="text" name="email" class="form-control" value="{{ $contact->email }}">
-                                    </div>
-                                </div>
 
                                 <div class="form-group row mb-4">
                                     <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3"></label>
                                     <div class="col-sm-12 col-md-7">
-                                        <button class="btn btn-primary">Update</button>
+                                        <button class="btn btn-primary">Create</button>
                                     </div>
                                 </div>
                             </form>
@@ -60,3 +52,4 @@
         </div>
     </section>
 @endsection
+

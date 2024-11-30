@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('footer_contact_infos', function (Blueprint $table) {
+        Schema::create('footer_help_links', function (Blueprint $table) {
             $table->id();
-            $table->text('address')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
+            $table->string('name');
+            $table->text('url');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('footer_contact_infos');
+        Schema::dropIfExists('footer_help_links');
     }
 };

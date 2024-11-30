@@ -119,7 +119,9 @@
                 <ul class="dropdown-menu" style="display: none;">
                     <li><a class="nav-link" href="{{ route('admin.footer-social.index') }}">Footer Social Link</a></li>
                     <li><a class="nav-link" href="{{ route('admin.footer-info.index') }}">Footer Information</a></li>
-                    <li><a class="nav-link" href="{{ route('admin.footer-info.index') }}">Footer Contact Information</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.footer-contact-info.index') }}">Footer Contact Information</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.footer-useful-links.index') }}">Footer Useful Links</a></li>
+                    <li><a class="nav-link" href="{{ route('admin.footer-help-links.index') }}">Footer Help Links</a></li>
 
                 </ul>
             </li>
