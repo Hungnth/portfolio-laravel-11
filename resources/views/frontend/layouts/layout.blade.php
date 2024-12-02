@@ -1,3 +1,8 @@
+@php
+    $general_setting = \App\Models\GeneralSetting::first();
+    $seo_setting = \App\Models\SeoSetting::first();
+@endphp
+
 <!doctype html>
 <html class="no-js" lang="en">
 
@@ -5,8 +10,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>HungNth | Personal Portfolio HTML Template</title>
-    <link rel="shortcut icon" type="image/ico" href="{{ asset('frontend/assets/images/favicon.png') }}"/>
+    <meta name="description" content="{{ @$seo_setting->description }}">
+    <meta name="keywords" content="{{ @$seo_setting->keywords }}">
+    <title>{{ @$seo_setting->title }}</title>
+    <link rel="shortcut icon" type="image/ico" href="{{ asset($general_setting->favicon) }}"/>
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/normalize.css') }}">
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/style-plugin-collection.css') }}">

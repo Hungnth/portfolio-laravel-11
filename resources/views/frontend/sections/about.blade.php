@@ -1,4 +1,4 @@
-<section class="about-area section-padding-top">
+<section class="about-area section-padding-top"  id="about-page">
     <div class="container">
         <div class="row d-flex align-items-center">
             <div class="col-lg-6">

@@ -15,7 +15,7 @@
             <div class="col-md-12 col-lg-3 widget">
                 <div class="text-box">
                     <figure class="footer-logo">
-                        <img src="{{ asset('frontend/assets/images/logo.png') }}" alt="">
+                        <img src="{{ asset($general_setting->footer_logo) }}" alt="">
                     </figure>
                     <p>{{ $footer_info->info }}</p>
                     <ul class="d-flex flex-wrap">

@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Handle file upload
  * @throws Exception
@@ -57,4 +56,26 @@ function get_colors($index)
     return $colors[$index % count($colors)];
 
 }
+
+/**
+ * Set sidebar active
+ */
+
+function set_sidebar_active($route)
+{
+    if (is_array($route)) {
+        foreach ($route as $r) {
+            if (request()->routeIs($r) ) {
+                return 'active';
+            }
+        }
+    }
+}
+
+
+
+
+
+
+
 
